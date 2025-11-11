@@ -1,0 +1,235 @@
+.app {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* List View */
+.list-view {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.list-header h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+.btn-new {
+  padding: 10px 24px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-new:hover {
+  background: #45a049;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.empty-state p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.config-list {
+  display: grid;
+  gap: 16px;
+}
+
+.config-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.config-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: #4CAF50;
+}
+
+.config-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.config-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.method-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.method-badge[data-method="GET"] {
+  background: #61affe;
+  color: white;
+}
+
+.method-badge[data-method="POST"] {
+  background: #49cc90;
+  color: white;
+}
+
+.method-badge[data-method="PUT"] {
+  background: #fca130;
+  color: white;
+}
+
+.method-badge[data-method="PATCH"] {
+  background: #50e3c2;
+  color: white;
+}
+
+.method-badge[data-method="DELETE"] {
+  background: #f93e3e;
+  color: white;
+}
+
+.endpoint {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.config-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-use,
+.btn-edit,
+.btn-delete {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-use {
+  background: #4CAF50;
+  color: white;
+}
+
+.btn-use:hover {
+  background: #45a049;
+}
+
+.btn-edit {
+  background: #2196F3;
+  color: white;
+}
+
+.btn-edit:hover {
+  background: #0b7dda;
+}
+
+.btn-delete {
+  background: #f44336;
+  color: white;
+}
+
+.btn-delete:hover {
+  background: #da190b;
+}
+
+.config-details {
+  display: flex;
+  gap: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.detail-item {
+  display: flex;
+  gap: 8px;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #666;
+}
+
+.detail-value {
+  color: #333;
+}
+
+/* Form View */
+.form-view-header {
+  margin-bottom: 20px;
+}
+
+.btn-back {
+  padding: 8px 16px;
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-back:hover {
+  background: #d0d0d0;
+}
+
+/* Error View */
+.error-view {
+  background: white;
+  border-radius: 8px;
+  padding: 60px 24px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error-view p {
+  margin-bottom: 24px;
+  color: #666;
+  font-size: 16px;
+}
