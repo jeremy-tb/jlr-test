@@ -1,6 +1,6 @@
-# API Desktop App
+# API Web App
 
-A cross-platform desktop application built with Electron, React, and TypeScript that allows administrators to configure API endpoints and create dynamic forms for making API calls.
+A web application built with React and TypeScript that allows administrators to configure API endpoints and create dynamic forms for making API calls.
 
 ## Features
 
@@ -42,24 +42,24 @@ Run the application in development mode with hot-reloading:
 npm run dev
 ```
 
-This will start both the Vite dev server for React and the Electron application.
+This will start the Vite dev server and open the application in your browser at `http://localhost:5173`.
 
 ### Build for Production
 
-Build the application for your platform:
+Build the application for production deployment:
 
 ```bash
 npm run build
 ```
 
-This will create a distributable package in the `release` directory.
+This will create optimized static files in the `dist` directory.
 
-### Package the Application
+### Preview Production Build
 
-To create a standalone installer:
+Preview the production build locally:
 
 ```bash
-npm run package
+npm run preview
 ```
 
 ## How to Use
@@ -121,8 +121,6 @@ Use `{{field_id}}` syntax to reference field values.
 
 ```
 jlr-test/
-├── electron/           # Electron main process
-│   └── main.ts
 ├── src/               # React application
 │   ├── components/    # React components
 │   │   ├── AdminPanel.tsx
@@ -138,26 +136,25 @@ jlr-test/
 │   └── index.css      # Global styles
 ├── index.html         # HTML template
 ├── package.json       # Dependencies and scripts
-├── tsconfig.json      # TypeScript config (React)
-├── tsconfig.electron.json  # TypeScript config (Electron)
-├── tsconfig.node.json      # TypeScript config (Vite)
+├── tsconfig.json      # TypeScript config
+├── tsconfig.node.json # TypeScript config (Vite)
 └── vite.config.ts     # Vite configuration
 ```
 
 ## Technologies Used
 
-- **Electron**: Cross-platform desktop application framework
-- **React**: UI library
+- **React**: UI library for building the interface
 - **TypeScript**: Type-safe JavaScript
 - **Vite**: Fast build tool and dev server
 - **Axios**: HTTP client for API calls
 
 ## Security Considerations
 
-- The application uses basic base64 encoding for storage. For production use with sensitive data, implement stronger encryption
-- Credentials are stored locally on the user's machine
+- The application uses basic base64 encoding for browser local storage. For production use with sensitive data, implement stronger encryption
+- Credentials are stored in the browser's local storage
 - Always use HTTPS endpoints when possible
 - Be cautious when sharing configurations that contain credentials
+- Browser local storage can be cleared, so back up important configurations
 
 ## Contributing
 
