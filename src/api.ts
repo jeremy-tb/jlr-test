@@ -1,77 +1,92 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { APIConfiguration, APIResponse } from './types';
+import { Text, TextWithRecordings, OCRResponse, GradeResponse } from './types';
 
-export async function callAPI(
-  config: APIConfiguration,
-  fieldValues: Record<string, any>
-): Promise<APIResponse> {
-  try {
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    };
+const API_BASE = '/api';
 
-    // Add authentication headers
-    if (config.authType === 'bearer' && config.authConfig?.token) {
-      headers['Authorization'] = `Bearer ${config.authConfig.token}`;
-    } else if (config.authType === 'api-key' && config.authConfig?.apiKey) {
-      const headerName = config.authConfig.apiKeyHeader || 'X-API-Key';
-      headers[headerName] = config.authConfig.apiKey;
-    }
+// Text operations
+export async function getTexts(): Promise<Text[]> {
+  const response = await fetch(`${API_BASE}/texts`);
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+  return data.texts;
+}
 
-    // Build the request configuration
-    const requestConfig: AxiosRequestConfig = {
-      method: config.method,
-      url: config.endpoint,
-      headers,
-    };
+export async function getText(id: number): Promise<TextWithRecordings> {
+  const response = await fetch(`${API_BASE}/texts?id=${id}`);
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+  return data.text;
+}
 
-    // Add basic auth if configured
-    if (config.authType === 'basic' && config.authConfig?.username && config.authConfig?.password) {
-      requestConfig.auth = {
-        username: config.authConfig.username,
-        password: config.authConfig.password,
-      };
-    }
+export async function createText(title: string, originalText: string, weekNumber: number): Promise<Text> {
+  const response = await fetch(`${API_BASE}/texts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title, original_text: originalText, week_number: weekNumber }),
+  });
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+  return data.text;
+}
 
-    // Build payload from field values
-    let payload = fieldValues;
+export async function deleteText(id: number): Promise<void> {
+  const response = await fetch(`${API_BASE}/texts?id=${id}`, { method: 'DELETE' });
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+}
 
-    // If a custom payload template is provided, use it
-    if (config.payloadTemplate) {
-      try {
-        // Replace placeholders in template with actual values
-        let templateStr = config.payloadTemplate;
-        Object.keys(fieldValues).forEach(key => {
-          const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
-          templateStr = templateStr.replace(regex, fieldValues[key]);
-        });
-        payload = JSON.parse(templateStr);
-      } catch (error) {
-        console.error('Failed to parse payload template:', error);
-        // Fall back to simple field values
-      }
-    }
+// Recording operations
+export async function createRecording(textId: number, transcribedText: string): Promise<{ id: number }> {
+  const response = await fetch(`${API_BASE}/recordings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text_id: textId, transcribed_text: transcribedText }),
+  });
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+  return data.recording;
+}
 
-    // Add payload for methods that support body
-    if (['POST', 'PUT', 'PATCH'].includes(config.method)) {
-      requestConfig.data = payload;
-    } else if (config.method === 'GET') {
-      requestConfig.params = payload;
-    }
+// Grade operations
+export async function getGradeHistory(): Promise<any[]> {
+  const response = await fetch(`${API_BASE}/grades`);
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+  return data.grades;
+}
 
-    const response = await axios(requestConfig);
+export async function saveGrade(recordingId: number, fluencyScore: number, accuracyScore: number, feedback: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/grades`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ recording_id: recordingId, fluency_score: fluencyScore, accuracy_score: accuracyScore, feedback }),
+  });
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
+}
 
-    return {
-      success: true,
-      data: response.data,
-      statusCode: response.status,
-    };
-  } catch (error: any) {
-    return {
-      success: false,
-      error: error.response?.data?.message || error.message || 'An error occurred',
-      statusCode: error.response?.status,
-      data: error.response?.data,
-    };
-  }
+// OCR operation
+export async function performOCR(imageBase64: string): Promise<OCRResponse> {
+  const response = await fetch(`${API_BASE}/ocr`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ imageBase64 }),
+  });
+  return response.json();
+}
+
+// AI Grading operation
+export async function performGrading(originalText: string, transcribedText: string): Promise<GradeResponse> {
+  const response = await fetch(`${API_BASE}/grade`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ originalText, transcribedText }),
+  });
+  return response.json();
+}
+
+// Database setup
+export async function setupDatabase(): Promise<void> {
+  const response = await fetch(`${API_BASE}/db-setup`, { method: 'POST' });
+  const data = await response.json();
+  if (!data.success) throw new Error(data.error);
 }
