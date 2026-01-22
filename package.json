@@ -4,7 +4,7 @@
   "description": "Personal app for Mandarin transcription practice and grading",
   "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "vite",
