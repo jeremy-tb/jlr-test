@@ -1,36 +1,65 @@
-export interface FieldDefinition {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'email' | 'password' | 'textarea' | 'select';
-  required: boolean;
-  defaultValue?: string;
-  options?: string[]; // For select type
-  placeholder?: string;
+// Database models
+export interface Text {
+  id: number;
+  title: string;
+  original_text: string;
+  week_number: number;
+  created_at: string;
 }
 
-export interface APIConfiguration {
-  endpoint: string;
-  method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-  authType: 'none' | 'bearer' | 'basic' | 'api-key';
-  authConfig?: {
-    token?: string;
-    username?: string;
-    password?: string;
-    apiKey?: string;
-    apiKeyHeader?: string;
-  };
-  fields: FieldDefinition[];
-  payloadTemplate?: string; // Optional JSON template for custom payload structure
+export interface Recording {
+  id: number;
+  text_id: number;
+  transcribed_text: string;
+  created_at: string;
 }
 
-export interface AppConfig {
-  apiConfigurations: APIConfiguration[];
-  currentConfigIndex: number;
+export interface Grade {
+  id: number;
+  recording_id: number;
+  fluency_score: number;
+  accuracy_score: number;
+  feedback: string;
+  created_at: string;
 }
 
-export interface APIResponse {
+// Combined view for display
+export interface RecordingWithGrade extends Recording {
+  grade?: Grade;
+}
+
+export interface TextWithRecordings extends Text {
+  recordings: RecordingWithGrade[];
+}
+
+// API request/response types
+export interface OCRRequest {
+  imageBase64: string;
+}
+
+export interface OCRResponse {
   success: boolean;
-  data?: any;
+  text?: string;
   error?: string;
-  statusCode?: number;
+}
+
+export interface GradeRequest {
+  originalText: string;
+  transcribedText: string;
+}
+
+export interface GradeResponse {
+  success: boolean;
+  fluencyScore?: number;
+  accuracyScore?: number;
+  feedback?: string;
+  error?: string;
+}
+
+// App state
+export type Page = 'texts' | 'text-detail' | 'history';
+
+export interface AppState {
+  currentPage: Page;
+  selectedTextId: number | null;
 }
