@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Personal app for Mandarin transcription practice and grading",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
